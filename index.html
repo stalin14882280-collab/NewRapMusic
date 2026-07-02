@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewRapMusic — Угадай рэп-клип</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключение шрифтов и библиотек -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cloudflare.com"></script>
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+
+    <!-- Задний фон с эффектом шума -->
+    <div class="bg-overlay"></div>
+
+    <!-- ЭКРАН 1:Приветственный экран -->
+    <section id="welcome-screen" class="screen active">
+        <div class="welcome-container">
+            <h1 class="logo">NewRap<span>Music</span></h1>
+            <p class="subtitle">Премиальный аналог Rap Frame. Угадай артиста по кадру из клипа.</p>
+            <button id="start-btn" class="btn-primary">НАЧАТЬ ИГРУ</button>
+        </div>
+    </section>
+
+    <!-- ЭКРАН 2: Игровой процесс -->
+    <section id="game-screen" class="screen">
+        <div class="game-header">
+            <div class="logo-mini">NewRap<span>Music</span></div>
+            <div class="score-board">Счет: <span id="score">0</span></div>
+        </div>
+
+        <div class="game-container">
+            <!-- Контейнер для кадра -->
+            <div class="frame-wrapper">
+                <img id="clip-frame" src="https://unsplash.com" alt="Кадр из клипа">
+                <div id="blur-overlay"></div>
+            </div>
+
+            <!-- Инструменты управления -->
+            <div class="controls-wrapper">
+                <div class="input-group">
+                    <input type="text" id="artist-input" placeholder="Введите имя рэпера..." autocomplete="off">
+                    <div id="autocomplete-list" class="autocomplete-suggestions"></div>
+                </div>
+                <button id="submit-btn" class="btn-primary">ОТВЕТИТЬ</button>
+            </div>
+
+            <!-- Подсказки -->
+            <div class="hints-container">
+                <button id="hint-track" class="btn-secondary">🎵 Название трека</button>
+                <button id="hint-year" class="btn-secondary">📅 Год клипа</button>
+            </div>
+            <div id="hint-text" class="hint-display"></div>
+        </div>
+    </section>
+
+    <!-- ЭКРАН 3: Финал игры -->
+    <section id="game-over-screen" class="screen">
+        <div class="game-over-container">
+            <h2 class="title-ended">ИГРА ОКОНЧЕНА</h2>
+            <p class="final-score">Твой финальный счет: <span id="final-score-val">0</span></p>
+            <button id="restart-btn" class="btn-primary">ИГРАТЬ СНОВА</button>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

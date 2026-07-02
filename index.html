@@ -1,259 +1,106 @@
-:root {
-    --bg-dark: #0A0A0A;
-    --panel-dark: #121212;
-    --border-grey: #242424;
-    --orange-neon: #FF6A00;
-    --orange-glow: rgba(255, 106, 0, 0.25);
-    --text-white: #FFFFFF;
-    --text-grey: #7A7A7A;
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewRapMusic — Официальный Баттл Hip-Hop.ru</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cloudflare.com"></script>
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
-}
+    <div class="forum-grid-bg"></div>
 
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-white);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-}
+    <!-- ЭКРАН 1: Главная страница форума / Вход -->
+    <section id="welcome-screen" class="screen active">
+        <div class="forum-category-box">
+            <div class="forum-header-strip">
+                <span>ИНФОРМАЦИЯ ФОРУМА: BATTLE ZONE</span>
+                <span class="status-dot">ONLINE</span>
+            </div>
+            <div class="welcome-content">
+                <h1 class="forum-logo">NewRap<span>Music</span></h1>
+                <p class="forum-desc">Судейская система текстовых и аудио-интернет баттлов портала Hip-Hop.ru. Угадай легенду андеграунда по его раунду.</p>
+                <button id="start-btn" class="forum-btn-primary">Зайти в тред баттла</button>
+            </div>
+        </div>
+    </section>
 
-/* Форумная сетка на бэкграунде */
-.forum-grid-bg {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: radial-gradient(var(--border-grey) 1px, transparent 0);
-    background-size: 24px 24px;
-    z-index: -1;
-    opacity: 0.4;
-}
+    <!-- ЭКРАН 2: Окно треда (Игровой процесс) -->
+    <section id="game-screen" class="screen">
+        <div class="top-nav-bar">
+            <div class="mini-logo">NewRap<span>Music</span></div>
+            <div class="user-stats-badge">РЕЙТИНГ СУДЬИ: <span id="score">0</span></div>
+        </div>
 
-.screen {
-    position: absolute;
-    width: 100%;
-    max-width: 900px;
-    padding: 20px;
-    display: none;
-    opacity: 0;
-    flex-direction: column;
-    justify-content: center;
-}
+        <div class="forum-post-container">
+            <!-- Заголовок темы форума -->
+            <div class="thread-title-strip">
+                <span id="battle-name-header">Загрузка раунда...</span>
+            </div>
 
-.screen.active {
-    display: flex;
-    opacity: 1;
-}
+            <!-- Имитация сообщения (Post) от МС -->
+            <div class="forum-post-wrapper">
+                <!-- Левая колонка: Профиль автора сообщения -->
+                <div class="forum-user-sidebar">
+                    <div class="avatar-frame">
+                        <img id="mc-avatar" src="" alt="User Avatar">
+                    </div>
+                    <div class="user-rank">MC Форума</div>
+                    <div class="user-meta">Регистрация: 2004</div>
+                </div>
 
-/* Коробки в стиле категорий vBulletin */
-.forum-category-box {
-    background: var(--panel-dark);
-    border: 1px solid var(--border-grey);
-    border-radius: 4px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-}
+                <!-- Правая колонка: Тело сообщения с треком -->
+                <div class="forum-post-body">
+                    <div class="post-date-bar">Сегодня, 04:20 #Раунд_Вылета</div>
+                    <div class="post-text-content">
+                        <p>Выкладываю свой трек на судейство. Оценивайте текст, деливери и общее впечатление.</p>
+                        
+                        <div class="audio-player-zone">
+                            <span class="player-label">🔊 Прикрепленный файл (MP3, 128 kbps):</span>
+                            <audio id="battle-audio" controls src=""></audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-.forum-header-strip {
-    background: #1A1A1A;
-    border-bottom: 2px solid var(--orange-neon);
-    padding: 12px 20px;
-    font-size: 0.75rem;
-    font-weight: 900;
-    letter-spacing: 1.5px;
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-grey);
-}
+            <!-- Форма быстрого ответа (Угадывание) -->
+            <div class="forum-quick-reply">
+                <div class="reply-header">Быстрый ответ в тему (Введите ник МС):</div>
+                <div class="reply-inputs-row">
+                    <div class="input-autocomplete-wrapper">
+                        <input type="text" id="artist-input" placeholder="Введите точный никнейм исполнителя..." autocomplete="off">
+                        <div id="autocomplete-list" class="suggestions-dropdown"></div>
+                    </div>
+                    <button id="submit-btn" class="forum-btn-primary">Отправить пост</button>
+                </div>
+            </div>
 
-.status-dot { color: var(--orange-neon); text-shadow: 0 0 8px var(--orange-neon); }
+            <!-- Кнопки подсказок в стиле форума -->
+            <div class="forum-actions-row">
+                <button id="hint-track" class="forum-btn-secondary">🔍 Посмотреть тему раунда</button>
+                <button id="hint-year" class="forum-btn-secondary">📅 Кто судил баттл?</button>
+            </div>
+            <div id="hint-text" class="hint-output-box"></div>
+        </div>
+    </section>
 
-.welcome-content {
-    padding: 50px 30px;
-    text-align: center;
-}
+    <!-- ЭКРАН 3: Бан / Окончание игры -->
+    <section id="game-over-screen" class="screen">
+        <div class="forum-category-box alert-box">
+            <div class="forum-header-strip alert-strip">УВЕДОМЛЕНИЕ СИСТЕМЫ</div>
+            <div class="welcome-content">
+                <h2 class="alert-title">БАТТЛ ЗАВЕРШЕН</h2>
+                <p class="forum-desc">Ваш судейский протокол успешно сохранен в архивах ХХРУ. Финальные очки: <span id="final-score-val" class="highlight-orange">0</span></p>
+                <button id="restart-btn" class="forum-btn-primary">Начать новый сезон</button>
+            </div>
+        </div>
+    </section>
 
-.forum-logo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 4rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: -2px;
-    margin-bottom: 15px;
-}
-.forum-logo span { color: var(--orange-neon); }
-
-.forum-desc {
-    color: var(--text-grey);
-    font-size: 1rem;
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto 35px auto;
-}
-
-/* Кнопки */
-.forum-btn-primary {
-    background: var(--orange-neon);
-    color: #000;
-    border: none;
-    padding: 16px 40px;
-    font-size: 0.85rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 2px;
-    cursor: pointer;
-    box-shadow: 0 0 20px var(--orange-glow);
-    transition: all 0.2s ease;
-}
-.forum-btn-primary:hover {
-    box-shadow: 0 0 30px var(--orange-neon);
-    transform: translateY(-1px);
-}
-
-.forum-btn-secondary {
-    background: #161616;
-    border: 1px solid var(--border-grey);
-    color: var(--text-white);
-    padding: 10px 18px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 2px;
-}
-.forum-btn-secondary:hover {
-    border-color: var(--orange-neon);
-    color: var(--orange-neon);
-}
-
-/* Навигация сверху */
-.top-nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-grey);
-    padding-bottom: 15px;
-}
-.mini-logo { font-size: 1.3rem; font-weight: 900; text-transform: uppercase; }
-.mini-logo span { color: var(--orange-neon); }
-.user-stats-badge { font-weight: 900; font-size: 0.85rem; color: var(--orange-neon); }
-
-/* Блок Структуры Сообщения (Postbit) */
-.forum-post-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.thread-title-strip {
-    background: #161616;
-    padding: 15px 20px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    border-left: 4px solid var(--orange-neon);
-}
-
-.forum-post-wrapper {
-    display: flex;
-    background: var(--panel-dark);
-    border: 1px solid var(--border-grey);
-    border-radius: 2px;
-    min-height: 240px;
-}
-
-.forum-user-sidebar {
-    width: 180px;
-    background: #101010;
-    border-right: 1px solid var(--border-grey);
-    padding: 20px 15px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.avatar-frame {
-    width: 100px;
-    height: 100px;
-    border: 1px solid var(--border-grey);
-    background: #050505;
-    margin-bottom: 12px;
-    overflow: hidden;
-}
-.avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-.user-rank { font-size: 0.75rem; font-weight: 700; color: var(--orange-neon); margin-bottom: 5px; }
-.user-meta { font-size: 0.65rem; color: var(--text-grey); }
-
-.forum-post-body {
-    flex-grow: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.post-date-bar { font-size: 0.7rem; color: var(--text-grey); margin-bottom: 15px; border-bottom: 1px dashed var(--border-grey); padding-bottom: 5px; }
-.post-text-content { font-size: 0.95rem; line-height: 1.6; color: #DDD; flex-grow: 1; }
-
-.audio-player-zone {
-    margin-top: 30px;
-    background: #161616;
-    padding: 15px;
-    border: 1px solid var(--border-grey);
-}
-.player-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-grey); margin-bottom: 10px; }
-audio { width: 100%; filter: invert(0.9) hue-rotate(150deg); }
-
-/* Быстрый ответ */
-.forum-quick-reply {
-    background: var(--panel-dark);
-    border: 1px solid var(--border-grey);
-    padding: 20px;
-}
-.reply-header { font-size: 0.8rem; font-weight: 700; color: var(--text-grey); margin-bottom: 12px; }
-.reply-inputs-row { display: flex; gap: 15px; }
-.input-autocomplete-wrapper { position: relative; flex-grow: 1; }
-
-#artist-input {
-    width: 100%;
-    background: #0A0A0A;
-    border: 1px solid var(--border-grey);
-    padding: 16px;
-    color: #fff;
-    font-size: 0.95rem;
-    outline: none;
-}
-#artist-input:focus { border-color: var(--orange-neon); }
-
-.suggestions-dropdown {
-    position: absolute;
-    top: 100%; left: 0; width: 100%;
-    background: #111;
-    border: 1px solid var(--border-grey);
-    max-height: 160px;
-    overflow-y: auto;
-    z-index: 99;
-}
-.suggestion-item { padding: 12px; cursor: pointer; font-size: 0.85rem; }
-.suggestion-item:hover { background: var(--orange-neon); color: #000; font-weight: 700; }
-
-.forum-actions-row { display: flex; gap: 12px; justify-content: flex-start; }
-.hint-output-box { font-size: 0.85rem; color: var(--orange-neon); font-weight: 700; min-height: 20px; }
-
-/* Экран бана/эндгейма */
-.alert-strip { border-bottom-color: #D32F2F; }
-.alert-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; letter-spacing: 1px; }
-.highlight-orange { color: var(--orange-neon); font-weight: 900; }
-
-@media(max-width: 700px) {
-    .forum-post-wrapper { flex-direction: column; }
-    .forum-user-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-grey); }
-    .reply-inputs-row { flex-direction: column; }
-    .forum-logo { font-size: 2.5rem; }
-}
+    <script src="script.js"></script>
+</body>
+</html>

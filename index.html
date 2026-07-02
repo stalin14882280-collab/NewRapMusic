@@ -3,103 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewRapMusic — Официальный Баттл Hip-Hop.ru</title>
+    <title>NewRapMusic — Соцсеть-Форум Андеграунда</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cloudflare.com"></script>
-    <script src="https://jsdelivr.net"></script>
 </head>
 <body>
 
-    <div class="forum-grid-bg"></div>
-
-    <!-- ЭКРАН 1: Главная страница форума / Вход -->
-    <section id="welcome-screen" class="screen active">
-        <div class="forum-category-box">
-            <div class="forum-header-strip">
-                <span>ИНФОРМАЦИЯ ФОРУМА: BATTLE ZONE</span>
-                <span class="status-dot">ONLINE</span>
-            </div>
-            <div class="welcome-content">
-                <h1 class="forum-logo">NewRap<span>Music</span></h1>
-                <p class="forum-desc">Судейская система текстовых и аудио-интернет баттлов портала Hip-Hop.ru. Угадай легенду андеграунда по его раунду.</p>
-                <button id="start-btn" class="forum-btn-primary">Зайти в тред баттла</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ЭКРАН 2: Окно треда (Игровой процесс) -->
-    <section id="game-screen" class="screen">
-        <div class="top-nav-bar">
-            <div class="mini-logo">NewRap<span>Music</span></div>
-            <div class="user-stats-badge">РЕЙТИНГ СУДЬИ: <span id="score">0</span></div>
-        </div>
-
-        <div class="forum-post-container">
-            <!-- Заголовок темы форума -->
-            <div class="thread-title-strip">
-                <span id="battle-name-header">Загрузка раунда...</span>
-            </div>
-
-            <!-- Имитация сообщения (Post) от МС -->
-            <div class="forum-post-wrapper">
-                <!-- Левая колонка: Профиль автора сообщения -->
-                <div class="forum-user-sidebar">
-                    <div class="avatar-frame">
-                        <img id="mc-avatar" src="" alt="User Avatar">
-                    </div>
-                    <div class="user-rank">MC Форума</div>
-                    <div class="user-meta">Регистрация: 2004</div>
+    <!-- Главная общая сетка приложения -->
+    <div class="app-container">
+        
+        <!-- ЛЕВАЯ ПАНЕЛЬ: Профиль и Статистика -->
+        <aside class="sidebar">
+            <div class="main-logo">NewRap<span>Music</span></div>
+            <div class="profile-card">
+                <div class="user-avatar-zone">
+                    <img id="my-avatar" src="https://unsplash.com" alt="Мой аватар">
                 </div>
+                <div class="user-info">
+                    <h3 id="my-nickname">Рэпер_ХХРУ</h3>
+                    <span class="user-status">Статус: Андеграунд МС</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <div class="stat-line">🔥 Респект: <span id="stat-respect">150</span></div>
+                <div class="stat-line">💿 Треков: <span id="stat-tracks">0</span></div>
+                <div class="stat-line">⚔️ Баттлов: <span id="stat-battles">0</span></div>
+            </div>
 
-                <!-- Правая колонка: Тело сообщения с треком -->
-                <div class="forum-post-body">
-                    <div class="post-date-bar">Сегодня, 04:20 #Раунд_Вылета</div>
-                    <div class="post-text-content">
-                        <p>Выкладываю свой трек на судейство. Оценивайте текст, деливери и общее впечатление.</p>
-                        
-                        <div class="audio-player-zone">
-                            <span class="player-label">🔊 Прикрепленный файл (MP3, 128 kbps):</span>
-                            <audio id="battle-audio" controls src=""></audio>
+            <nav class="sidebar-menu">
+                <button class="menu-btn active" onclick="switchSection('feed')">📰 Лента форума</button>
+                <button class="menu-btn studio" onclick="switchSection('studio')">🎤 Студия записей</button>
+            </nav>
+        </aside>
+
+        <!-- ЦЕНТРАЛЬНЫЙ ХАБ: Контентная зона -->
+        <main class="content-hub">
+            
+            <!-- СЕКЦИЯ 1: ЛЕНТА ФОРУМА (АКТИВНАЯ ПО УМОЛЧАНИЮ) -->
+            <section id="section-feed" class="forum-section active">
+                <div class="section-title-strip">ПОСЛЕДНЯЯ АКТИВНОСТЬ В КОМЬЮНИТИ</div>
+                <div id="forum-threads-list" class="threads-container">
+                    <!-- Сюда JS генерирует треки, фиты, баттлы и тексты -->
+                </div>
+            </section>
+
+            <!-- СЕКЦИЯ 2: СТУДИЯ ЗАПИСЕЙ И ДРОПОВ -->
+            <section id="section-studio" class="forum-section">
+                <div class="section-title-strip">СОЗДАТЬ НОВЫЙ РЕЛИЗ / ВЫЗОВ НА БАТТЛ</div>
+                
+                <div class="studio-form-box">
+                    <div class="form-group">
+                        <label>1. Выберите тип публикации:</label>
+                        <div class="type-selectors">
+                            <button class="type-tab active" data-type="solo" onclick="selectPostType('solo')">Сольный трек</button>
+                            <button class="type-tab" data-type="fit" onclick="selectPostType('fit')">Сделать Фит (Коллаб)</button>
+                            <button class="type-tab" data-type="battle" onclick="selectPostType('battle')">Запустить Баттл (1v1)</button>
+                            <button class="type-tab" data-type="text" onclick="selectPostType('text')">Просто текст (ТХТ-рэп)</button>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Форма быстрого ответа (Угадывание) -->
-            <div class="forum-quick-reply">
-                <div class="reply-header">Быстрый ответ в тему (Введите ник МС):</div>
-                <div class="reply-inputs-row">
-                    <div class="input-autocomplete-wrapper">
-                        <input type="text" id="artist-input" placeholder="Введите точный никнейм исполнителя..." autocomplete="off">
-                        <div id="autocomplete-list" class="suggestions-dropdown"></div>
+                    <!-- Динамический блок выбора бита (Скрывается для текстовых) -->
+                    <div class="form-group" id="beat-selection-group">
+                        <label>2. Музыкальная подложка (Бит):</label>
+                        <select id="beat-select">
+                            <option value="own">Загрузить свой личный минус (.mp3)</option>
+                            <option value="none">Без бита (Акапелла андеграунда)</option>
+                            <option value="community_classic">Классический баттловый минус (Из комьюнити)</option>
+                            <option value="community_dirty">Грязный олдскульный бум-бэп (Из комьюнити)</option>
+                        </select>
                     </div>
-                    <button id="submit-btn" class="forum-btn-primary">Отправить пост</button>
+
+                    <!-- Динамический блок для Фитов (Скрыт по умолчанию) -->
+                    <div class="form-group hidden" id="fit-partner-group">
+                        <label>Пригласить МС на фит:</label>
+                        <select id="partner-select">
+                            <option value="Oxxxymiron">Oxxxymiron (Лондон)</option>
+                            <option value="Babangida">Babangida (Калининград)</option>
+                            <option value="Noize MC">Noize MC (Москва)</option>
+                            <option value="СД">СД (What's Up Crew)</option>
+                        </select>
+                    </div>
+
+                    <!-- Поля ввода контента -->
+                    <div class="form-group">
+                        <label>Заголовок релиза или тема баттла:</label>
+                        <input type="text" id="post-title-input" placeholder="Например: Раунд 3 — В стране женщин или Дисc на оппонента...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Текст трека / Рифмы / Описание:</label>
+                        <textarea id="post-text-input" rows="6" placeholder="Запиши свои панчи или текст трека сюда..."></textarea>
+                    </div>
+
+                    <button class="publish-btn" onclick="publishRelease()">ОПУБЛИКОВАТЬ НА ХИП-ХОП.РУ</button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Кнопки подсказок в стиле форума -->
-            <div class="forum-actions-row">
-                <button id="hint-track" class="forum-btn-secondary">🔍 Посмотреть тему раунда</button>
-                <button id="hint-year" class="forum-btn-secondary">📅 Кто судил баттл?</button>
-            </div>
-            <div id="hint-text" class="hint-output-box"></div>
-        </div>
-    </section>
-
-    <!-- ЭКРАН 3: Бан / Окончание игры -->
-    <section id="game-over-screen" class="screen">
-        <div class="forum-category-box alert-box">
-            <div class="forum-header-strip alert-strip">УВЕДОМЛЕНИЕ СИСТЕМЫ</div>
-            <div class="welcome-content">
-                <h2 class="alert-title">БАТТЛ ЗАВЕРШЕН</h2>
-                <p class="forum-desc">Ваш судейский протокол успешно сохранен в архивах ХХРУ. Финальные очки: <span id="final-score-val" class="highlight-orange">0</span></p>
-                <button id="restart-btn" class="forum-btn-primary">Начать новый сезон</button>
-            </div>
-        </div>
-    </section>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
